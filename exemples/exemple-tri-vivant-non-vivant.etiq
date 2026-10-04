@@ -1,0 +1,156 @@
+{
+  "app": "Générateur d’étiquettes déplaçables",
+  "version": 1,
+  "savedAt": "2026-10-04T10:38:22.061Z",
+  "labels": [
+    {
+      "id": "label-1791110301367-1",
+      "type": "text",
+      "text": "un chat",
+      "x": 150,
+      "y": 90,
+      "fontFamily": "Marelle 2",
+      "fontSize": 44,
+      "fontWeight": "normal",
+      "textDecoration": "none",
+      "textColor": "#111827",
+      "bgColor": "#ffffff",
+      "borderColor": "#111827",
+      "borderWidth": 3,
+      "borderRadius": 16
+    },
+    {
+      "id": "label-1791110301367-2",
+      "type": "text",
+      "text": "une pierre",
+      "x": 480,
+      "y": 90,
+      "fontFamily": "Marelle 2",
+      "fontSize": 44,
+      "fontWeight": "normal",
+      "textDecoration": "none",
+      "textColor": "#111827",
+      "bgColor": "#ffffff",
+      "borderColor": "#111827",
+      "borderWidth": 3,
+      "borderRadius": 16
+    },
+    {
+      "id": "label-1791110301367-3",
+      "type": "text",
+      "text": "un arbre",
+      "x": 810,
+      "y": 90,
+      "fontFamily": "Marelle 2",
+      "fontSize": 44,
+      "fontWeight": "normal",
+      "textDecoration": "none",
+      "textColor": "#111827",
+      "bgColor": "#ffffff",
+      "borderColor": "#111827",
+      "borderWidth": 3,
+      "borderRadius": 16
+    },
+    {
+      "id": "label-1791110301367-4",
+      "type": "text",
+      "text": "une chaise",
+      "x": 1069,
+      "y": 90,
+      "fontFamily": "Marelle 2",
+      "fontSize": 44,
+      "fontWeight": "normal",
+      "textDecoration": "none",
+      "textColor": "#111827",
+      "bgColor": "#ffffff",
+      "borderColor": "#111827",
+      "borderWidth": 3,
+      "borderRadius": 16
+    },
+    {
+      "id": "label-1791110301367-5",
+      "type": "text",
+      "text": "un oiseau",
+      "x": 284,
+      "y": 176,
+      "fontFamily": "Marelle 2",
+      "fontSize": 44,
+      "fontWeight": "normal",
+      "textDecoration": "none",
+      "textColor": "#111827",
+      "bgColor": "#ffffff",
+      "borderColor": "#111827",
+      "borderWidth": 3,
+      "borderRadius": 16
+    },
+    {
+      "id": "label-1791110301367-6",
+      "type": "text",
+      "text": "un vélo",
+      "x": 614,
+      "y": 176,
+      "fontFamily": "Marelle 2",
+      "fontSize": 44,
+      "fontWeight": "normal",
+      "textDecoration": "none",
+      "textColor": "#111827",
+      "bgColor": "#ffffff",
+      "borderColor": "#111827",
+      "borderWidth": 3,
+      "borderRadius": 16
+    },
+    {
+      "id": "label-1791110301367-7",
+      "type": "text",
+      "text": "une fleur",
+      "x": 944,
+      "y": 176,
+      "fontFamily": "Marelle 2",
+      "fontSize": 44,
+      "fontWeight": "normal",
+      "textDecoration": "none",
+      "textColor": "#111827",
+      "bgColor": "#ffffff",
+      "borderColor": "#111827",
+      "borderWidth": 3,
+      "borderRadius": 16
+    },
+    {
+      "id": "label-1791110301367-8",
+      "type": "text",
+      "text": "un caillou",
+      "x": 1069,
+      "y": 176,
+      "fontFamily": "Marelle 2",
+      "fontSize": 44,
+      "fontWeight": "normal",
+      "textDecoration": "none",
+      "textColor": "#111827",
+      "bgColor": "#ffffff",
+      "borderColor": "#111827",
+      "borderWidth": 3,
+      "borderRadius": 16
+    }
+  ],
+  "columns": [
+    {
+      "title": "Vivant",
+      "color": "#dcfce7"
+    },
+    {
+      "title": "Non vivant",
+      "color": "#fee2e2"
+    }
+  ],
+  "settings": {
+    "menuPosition": "top",
+    "menuVisible": true
+  },
+  "styles": {
+    "textColor": "#111827",
+    "bgColor": "#ffffff",
+    "borderColor": "#111827",
+    "columnColor": "#fee2e2"
+  },
+  "nextId": 9
+}

@@ -1,0 +1,21 @@
+# Systèmes d'exploitation
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Éditeurs
+.vscode/
+.idea/
+*.swp
+*~
+
+# Outils éventuels (le projet n'en a pas besoin pour fonctionner)
+node_modules/
+*.log
+
+# Secrets : ne jamais les versionner
+.env
+.env.*
+
+# Site généré par GitLab Pages
+public/

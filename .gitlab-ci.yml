@@ -1,0 +1,13 @@
+# Publication sur GitLab Pages (forge.apps.education.fr).
+# Le site est statique : aucune compilation, on copie simplement les fichiers dans public/.
+pages:
+  image: alpine:latest
+  stage: deploy
+  script:
+    - mkdir -p public
+    - cp -r index.html LICENSE assets scripts styles exemples public/
+  artifacts:
+    paths:
+      - public
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH

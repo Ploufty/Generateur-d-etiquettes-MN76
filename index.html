@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="fr" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#000091">
+  <meta name="description" content="Etiq classe : générateur d'étiquettes déplaçables (texte et image) pour les activités de tri au tableau numérique.">
+  <meta name="author" content="Liaudet Etienne">
+  <title>Etiq classe – Générateur d'étiquettes déplaçables</title>
+  <link rel="icon" type="image/png" href="assets/icon.png">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="preload" href="https://cdn.jsdelivr.net/npm/@gouvfr/dsfr@1.15.3/dist/fonts/Marianne-Regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="https://cdn.jsdelivr.net/npm/@gouvfr/dsfr@1.15.3/dist/fonts/Marianne-Bold.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="styles/style.css">
+  <!-- Applique les préférences d'affichage (communes aux outils Apps1D76) avant le premier rendu -->
+  <script>
+  (function (d, p) {
+    try { p = JSON.parse(localStorage.getItem('apps1d-prefs')) || {}; } catch (e) { p = {}; }
+    var mq = function (q) { return window.matchMedia && matchMedia(q).matches; };
+    d.dataset.theme = p.theme === 'dark' || (p.theme !== 'light' && mq('(prefers-color-scheme: dark)')) ? 'dark' : 'light';
+    d.dataset.motion = p.motion === 'reduce' || (p.motion !== 'on' && mq('(prefers-reduced-motion: reduce)')) ? 'reduce' : 'full';
+    d.dataset.contrast = p.contrast ? 'high' : 'normal';
+    d.style.setProperty('--text-scale', ({ 115: 1.15, 130: 1.3 })[p.text] || 1);
+  })(document.documentElement);
+  </script>
+</head>
+<body class="menu-top">
+  <div id="app" class="app-shell">
+    <aside id="menuPanel" class="menu-panel" aria-label="Menu principal">
+      <div class="tricolore" aria-hidden="true"></div>
+      <header class="menu-header">
+        <div class="brand">
+          <img src="assets/icon.png" alt="" class="brand-icon">
+          <div>
+            <h1>Etiq classe</h1>
+            <p><b>Apps1D<span>76</span></b> · Mission Numérique Éducatif 76</p>
+          </div>
+        </div>
+        <nav class="tabs" aria-label="Onglets">
+          <button class="tab-button active" data-tab="home">Activité</button>
+          <button class="tab-button" data-tab="text">Texte</button>
+          <button class="tab-button" data-tab="images">Images</button>
+          <button class="tab-button" data-tab="columns">Colonnes</button>
+          <button class="tab-button" data-tab="help">Aide</button>
+        </nav>
+        <div class="actions">
+          <button type="button" class="icon-btn" id="fullscreenBtn" aria-label="Plein écran" title="Plein écran">
+            <svg class="i-expand" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>
+            <svg class="i-compress" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></svg>
+            <span class="btn-label">Plein écran</span>
+          </button>
+          <button type="button" class="icon-btn" id="themeToggle" aria-label="Activer le mode sombre">
+            <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+            <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M4.6 19.4l2.1-2.1M17.3 6.7l2.1-2.1"/></svg>
+          </button>
+          <button type="button" class="icon-btn" id="settingsBtn" aria-haspopup="dialog" aria-controls="settingsDialog">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
+            <span class="btn-label">Affichage</span>
+          </button>
+        </div>
+      </header>
+
+      <section class="tab-panel active" id="tab-home">
+        <div class="card">
+          <h2>Activité</h2>
+          <div class="button-grid compact">
+            <button id="newBtn" class="btn btn-ghost">Nouveau</button>
+            <button id="openBtn" class="btn btn-ghost">Ouvrir .etiq</button>
+            <button id="saveBtn" class="btn">Enregistrer</button>
+            <button id="saveAsBtn" class="btn btn-ghost">Enregistrer sous…</button>
+          </div>
+          <input type="file" id="openFileInput" accept=".etiq,application/json" hidden>
+          <p class="hint">Le fichier <strong>.etiq</strong> conserve les étiquettes, les images, les colonnes et les réglages.</p>
+        </div>
+
+        <div class="card">
+          <h2>Plateau</h2>
+          <button id="clearLabelsBtn" class="btn btn-ghost btn-danger wide">Supprimer toutes les étiquettes</button>
+          <p class="hint">Pour supprimer une seule étiquette, la glisser dans la corbeille. Les colonnes se gèrent dans l’onglet <strong>Colonnes</strong>.</p>
+        </div>
+      </section>
+
+      <section class="tab-panel" id="tab-text">
+        <div class="card grow-card">
+          <h2 class="sr-only">Étiquettes texte</h2>
+          <textarea id="textInput" class="text-input" aria-label="Mots des étiquettes" placeholder="Une étiquette par ligne ou entre virgules : chat, petit chien, Texte 2…"></textarea>
+          <fieldset class="split-field">
+            <legend>Une étiquette pour chaque :</legend>
+            <div class="seg" id="splitMode">
+              <label><input type="radio" name="splitMode" value="list" checked><span>Virgule ou ligne</span></label>
+              <label><input type="radio" name="splitMode" value="line"><span>Ligne</span></label>
+              <label><input type="radio" name="splitMode" value="word"><span>Mot</span></label>
+              <label><input type="radio" name="splitMode" value="letter"><span>Lettre</span></label>
+            </div>
+          </fieldset>
+          <p id="splitPreview" class="split-preview" aria-live="polite"></p>
+          <div class="row wrap text-action-row">
+            <button id="loadTxtBtn" class="btn btn-ghost">Ajouter liste.txt</button>
+            <input type="file" id="txtFileInput" accept=".txt,text/plain" hidden>
+            <button id="createTextLabelsBtn" class="btn">Générer les étiquettes</button>
+            <button id="createRandomTextLabelsBtn" class="btn btn-dice"><span aria-hidden="true">🎲</span> Générer dans le désordre</button>
+          </div>
+        </div>
+
+        <div class="card settings-card">
+          <div class="settings-heading">
+            <h2>Réglages du texte</h2>
+            <button type="button" id="fontInfoBtn" class="inline-help settings-help-corner" aria-label="Information sur les polices" data-tooltip="Si la police n’est pas installée sur l’ordinateur, le navigateur utilisera automatiquement une police de secours. Plus d’information pour l’installation des polices utilisées dans l’onglet AIDE.">?</button>
+          </div>
+          <label class="field">
+            Police recommandée
+            <select id="fontSelect">
+              <option value="Arial">Arial</option>
+              <option value="Century Gothic">Century Gothic</option>
+              <option value="Marelle 2">Marelle 2</option>
+              <option value="Marelle Baton 2">Marelle Baton 2</option>
+              <option value="OpenDyslexic">OpenDyslexic</option>
+              <option value="Comic Sans MS">Comic Sans MS</option>
+            </select>
+          </label>
+          <label class="field">
+            Police personnalisée
+            <input id="customFontInput" type="text" placeholder="Nom exact de la police installée">
+          </label>
+          <label class="field">
+            <span>Taille : <span id="fontSizeValue">36 px</span></span>
+            <input id="fontSizeInput" type="range" min="18" max="90" value="36">
+          </label>
+          <p id="fontStatus" class="font-status" role="status" aria-live="polite"></p>
+          <div class="toggle-row">
+            <label><input id="boldInput" type="checkbox"> Gras</label>
+            <label><input id="underlineInput" type="checkbox"> Souligné</label>
+            <label><input id="roundedInput" type="checkbox" checked> Coins arrondis</label>
+          </div>
+          <div class="palette-row">
+          <div class="palette-block" data-target="textColor">
+            <span>Texte</span>
+            <div class="palette" id="textColorPalette"></div>
+          </div>
+          <div class="palette-block" data-target="bgColor">
+            <span>Fond</span>
+            <div class="palette" id="bgColorPalette"></div>
+          </div>
+          <div class="palette-block" data-target="borderColor">
+            <span>Bordure</span>
+            <div class="palette" id="borderColorPalette"></div>
+          </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="tab-panel" id="tab-images">
+        <div class="card">
+          <h2>Étiquettes image</h2>
+          <button id="addImagesBtn" class="btn wide">Ajouter image(s)</button>
+          <input type="file" id="imageFileInput" accept="image/png,image/jpeg,image/webp,image/gif" multiple hidden>
+          <p class="hint">La sélection de plusieurs images en une seule fois est possible. Chaque image devient une étiquette manipulable, redimensionnable avec la poignée ronde en bas à droite.</p>
+        </div>
+        <div class="card">
+          <h2>Réglages image</h2>
+          <label class="field">
+            Taille initiale
+            <select id="imageSizeSelect">
+              <option value="120">Petite</option>
+              <option value="180" selected>Moyenne</option>
+              <option value="260">Grande</option>
+            </select>
+          </label>
+          <div class="toggle-row">
+            <label><input id="imageBorderInput" type="checkbox" checked> Bordure</label>
+            <label><input id="imageRoundedInput" type="checkbox" checked> Coins arrondis</label>
+          </div>
+          <p class="hint">La couleur de bordure est celle choisie dans l’onglet <strong>Texte</strong>.</p>
+        </div>
+      </section>
+
+      <section class="tab-panel" id="tab-columns">
+        <div class="card">
+          <h2>Modèles rapides</h2>
+          <div class="button-grid compact">
+            <button class="btn btn-ghost preset-columns" data-preset="2">2 colonnes</button>
+            <button class="btn btn-ghost preset-columns" data-preset="3">3 colonnes</button>
+            <button class="btn btn-ghost preset-columns" data-preset="4">4 colonnes</button>
+            <button class="btn btn-ghost preset-columns" data-preset="oui-non">Oui / Non</button>
+            <button class="btn btn-ghost preset-columns" data-preset="vrai-faux">Vrai / Faux</button>
+          </div>
+        </div>
+        <div class="card">
+          <h2>Colonne personnalisée</h2>
+          <label class="field">
+            Titre
+            <input id="customColumnTitle" type="text" placeholder="Ex. Animaux">
+          </label>
+          <div class="palette-block" data-target="columnColor">
+            <span>Couleur</span>
+            <div class="palette" id="columnColorPalette"></div>
+          </div>
+          <button id="addColumnBtn" class="btn wide">Ajouter la colonne</button>
+        </div>
+        <div class="card">
+          <h2>Colonnes créées</h2>
+          <div id="columnList" class="column-list empty">Aucune colonne pour le moment.</div>
+          <button id="clearColumnsBtn" class="btn btn-ghost btn-danger wide clear-columns">Supprimer toutes les colonnes</button>
+        </div>
+      </section>
+
+      <section class="tab-panel" id="tab-help">
+        <div class="card help-card help-wide">
+          <h2>Aide rapide</h2>
+
+          <p>
+            <strong>Menu :</strong> la languette <strong>Masquer le menu</strong>, au bord du menu, libère tout le
+            plateau. La même languette, devenue <strong>Menu</strong> au bord de l’écran, permet de le rouvrir.
+          </p>
+
+          <p>
+            <strong>En-tête :</strong> <strong>Plein écran</strong> (conseillé au TNI / VPI), mode clair ou sombre,
+            et <strong>Affichage</strong> pour la taille du texte, le contraste, les animations et la position du menu
+            (haut, bas, gauche ou droite : au TNI, le bas est plus facile à atteindre pour les élèves).
+          </p>
+
+          <p>
+            <strong>Onglet Activité :</strong> nouvelle activité, ouverture et enregistrement au format
+            <strong>.etiq</strong> (étiquettes, images, colonnes et position du menu), suppression de toutes les étiquettes.
+          </p>
+
+          <p>
+            <strong>Onglet Texte :</strong> les mots saisis (ou importés depuis un fichier .txt) deviennent des
+            étiquettes avec <strong>Générer les étiquettes</strong>, dans l’ordre ou dans le désordre. Par défaut, une étiquette
+            se termine à chaque virgule, point-virgule ou retour à la ligne (« petit chien » reste une seule étiquette,
+            et une virgule entre deux chiffres, comme dans 1,5, ne coupe pas) ;
+            le découpage peut aussi se faire par ligne seulement, par mot ou par lettre. Découpage, police,
+            taille, style et couleurs se règlent à droite.
+          </p>
+
+          <p>
+            <strong>Onglet Images :</strong> une ou plusieurs images en une seule sélection. Une image se redimensionne
+            avec la poignée ronde en bas à droite.
+          </p>
+
+          <p>
+            <strong>Onglet Colonnes :</strong> colonnes de tri en fond de plateau, modèles rapides ou personnalisées,
+            modifiables et supprimables.
+          </p>
+
+          <p>
+            <strong>Déplacer / supprimer :</strong> une étiquette se déplace à la souris, au doigt ou au stylet
+            (plusieurs élèves peuvent déplacer des étiquettes en même temps). Déposée dans la corbeille, en bas
+            à gauche, elle est supprimée.
+          </p>
+        </div>
+
+        <div class="card help-card help-wide">
+          <details class="help-details">
+            <summary>Polices utilisées</summary>
+
+            <div class="formal-help">
+              <p>
+                <strong>Marelle 2</strong>, <strong>Marelle Baton 2</strong> et <strong>OpenDyslexic</strong> sont
+                intégrées à l’application : aucune installation n’est nécessaire. Elles sont distribuées sous
+                licence libre SIL Open Font License 1.1.
+              </p>
+
+              <p>
+                Pour utiliser Marelle dans d’autres logiciels (traitement de texte…), elle peut être téléchargée sur
+                <a href="https://marelle.forge.apps.education.fr/#telecharger" target="_blank" rel="noopener">marelle.forge.apps.education.fr</a>,
+                puis installée sous Windows par un clic droit sur le fichier, <strong>Installer pour tous les utilisateurs</strong>.
+              </p>
+
+              <p>
+                Licences des polices intégrées :
+                <a href="assets/fonts/Marelle-LICENSE.txt" target="_blank" rel="noopener">Marelle 2 et Marelle Baton 2</a>,
+                <a href="assets/fonts/OpenDyslexic-LICENSE.txt" target="_blank" rel="noopener">OpenDyslexic</a>
+                (texte officiel de la licence :
+                <a href="https://openfontlicense.org" target="_blank" rel="noopener">SIL Open Font License 1.1</a>).
+              </p>
+
+              <p>
+                Century Gothic et Comic Sans MS dépendent des polices installées sur l’ordinateur. Sous la liste des
+                polices, un message indique si la police choisie est disponible ; sinon, Arial est utilisée.
+              </p>
+            </div>
+          </details>
+        </div>
+
+        <div class="card help-card help-wide about-card" id="about">
+          <h2>À propos</h2>
+          <p>
+            <strong>Etiq classe</strong> — générateur d’étiquettes déplaçables pour le tableau numérique.
+            Auteur : <strong>Liaudet Etienne</strong>, Mission Numérique Éducatif 76.
+          </p>
+          <p>
+            <strong>Licences :</strong> code sous licence
+            <a href="LICENSE" target="_blank" rel="noopener">MIT</a> ;
+            textes d’aide, icône et activité d’exemple sous licence
+            <a href="https://creativecommons.org/licenses/by/4.0/deed.fr" target="_blank" rel="noopener">CC BY 4.0</a>.
+            Les activités que vous créez vous appartiennent.
+          </p>
+          <p>
+            <strong>Ressources tierces :</strong> polices Marelle 2 et Marelle Baton 2
+            (© Ministère de l’Éducation nationale, <a href="assets/fonts/Marelle-LICENSE.txt" target="_blank" rel="noopener">SIL OFL 1.1</a>),
+            OpenDyslexic (© Abbie Gonzalez, <a href="assets/fonts/OpenDyslexic-LICENSE.txt" target="_blank" rel="noopener">SIL OFL 1.1</a>),
+            police d’interface Marianne (police de l’État, chargée depuis le DSFR), icônes dérivées de
+            <a href="https://feathericons.com" target="_blank" rel="noopener">Feather Icons</a> (MIT).
+          </p>
+          <p>
+            <strong>Vie privée :</strong> rien n’est envoyé sur Internet. Les activités restent dans ce navigateur
+            et dans les fichiers .etiq que vous enregistrez.
+          </p>
+          <!-- Cartouche Forge (variante « transparent clair ») -->
+          <p class="zone-liens" style="text-align: left; margin-top: 15px; margin-bottom: 15px;">
+            <a id="laforge" title="La forge des communs numériques éducatifs sur Apps.education.fr" target="_blank" rel="noopener" href="https://docs.forge.apps.education.fr/" style="display: inline-block; font-size: 16px; font-family: Arial, Helvetica, sans-serif; text-align: left; font-weight: bold; color: #0000FF; background-color: rgba(255, 255, 255, 0.5); padding-left: 0px; padding-right: 10px; border-radius: 20px / 50%; text-decoration: none;">
+            <img src="https://docs.forge.apps.education.fr/docs/communication/visuels/-/raw/main/logo/logo-forge-transparent.png" alt="Logo de la Forge" style="height: 40px; width: auto; border-radius: 50%; vertical-align: middle; margin-right: 5px;">Forge des communs numériques éducatifs</a>
+          </p>
+        </div>
+      </section>
+    </aside>
+
+    <main id="workspace" class="workspace" aria-label="Plateau de manipulation">
+      <div id="columnsLayer" class="columns-layer" aria-hidden="true"></div>
+      <div id="labelsLayer" class="labels-layer"></div>
+      <div id="trashZone" class="trash-zone" aria-label="Corbeille">
+        <span class="trash-icon">🗑</span>
+        <span>Corbeille</span>
+      </div>
+      <button type="button" id="menuToggle" class="menu-tab" aria-controls="menuPanel" aria-expanded="true">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 15 6-6 6 6"/></svg>
+        <span class="menu-tab-text">Masquer le menu</span>
+      </button>
+    </main>
+  </div>
+
+  <dialog id="saveAsDialog" class="settings-dialog" aria-labelledby="saveAsTitle">
+    <form method="dialog" class="settings">
+      <div class="settings-head">
+        <h2 id="saveAsTitle">Enregistrer sous</h2>
+        <button type="submit" class="icon-btn" value="cancel" formnovalidate aria-label="Fermer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+      </div>
+      <label class="field">
+        Nom du fichier
+        <span class="file-name-row"><input id="saveAsName" type="text" required autocomplete="off"><span>.etiq</span></span>
+      </label>
+      <div class="settings-foot">
+        <button type="submit" class="btn btn-ghost" value="cancel" formnovalidate>Annuler</button>
+        <button type="submit" class="btn" value="save">Enregistrer</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="settingsDialog" class="settings-dialog" aria-labelledby="settingsTitle">
+    <form method="dialog" class="settings">
+      <div class="settings-head">
+        <h2 id="settingsTitle">Paramètres d'affichage</h2>
+        <button type="submit" class="icon-btn" value="close" aria-label="Fermer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+      </div>
+
+      <fieldset>
+        <legend>Thème</legend>
+        <div class="seg">
+          <label><input type="radio" name="theme" value="light"><span>Clair</span></label>
+          <label><input type="radio" name="theme" value="dark"><span>Sombre</span></label>
+          <label><input type="radio" name="theme" value="auto"><span>Système</span></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Taille du texte</legend>
+        <div class="seg">
+          <label><input type="radio" name="text" value="100"><span>Normale</span></label>
+          <label><input type="radio" name="text" value="115"><span class="t115">Grande</span></label>
+          <label><input type="radio" name="text" value="130"><span class="t130">Très grande</span></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Animations</legend>
+        <div class="seg">
+          <label><input type="radio" name="motion" value="on"><span>Activées</span></label>
+          <label><input type="radio" name="motion" value="reduce"><span>Réduites</span></label>
+          <label><input type="radio" name="motion" value="auto"><span>Système</span></label>
+        </div>
+      </fieldset>
+
+      <label class="switch"><input type="checkbox" name="contrast"><span>Contraste renforcé</span></label>
+
+      <fieldset>
+        <legend>Position du menu</legend>
+        <div class="seg">
+          <label><input type="radio" name="menuPosition" value="top"><span>Haut</span></label>
+          <label><input type="radio" name="menuPosition" value="bottom"><span>Bas</span></label>
+          <label><input type="radio" name="menuPosition" value="left"><span>Gauche</span></label>
+          <label><input type="radio" name="menuPosition" value="right"><span>Droite</span></label>
+        </div>
+      </fieldset>
+
+      <div class="settings-foot">
+        <button type="button" class="btn btn-ghost" id="resetUiBtn">Réinitialiser</button>
+        <button type="submit" class="btn" value="close">Fermer</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="scripts/app.js"></script>
+</body>
+</html>
